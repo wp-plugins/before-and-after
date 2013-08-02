@@ -27,6 +27,8 @@ include('include/backfill_functions.php');
 class BeforeAndAfterPlugin
 {
 
+	var $nextGoalName = false;
+
 	/* Plugin init. Registers shortcodes and starts the session if needed */
 	function __construct()
 	{
@@ -68,16 +70,19 @@ class BeforeAndAfterPlugin
 		if (!$hasBefore && !$hasAfter)
 		{
 			$content = '[before]' . $content . '[/before]';
+			$hasBefore = true;
 		}
 
 		if ($this->wasGoalCompleted($goalName))
 		{
-			$shortcodeContent = $hasAfter ? $this->extract_shortcode('after', $content) : '';
+			$shortcodeContent = $hasAfter ? $this->extract_shortcode('after', $content) : 'x';
+			$this->nextGoalName = $goalName;
 			return do_shortcode($shortcodeContent);
 		}
 		else
 		{
-			$shortcodeContent = $hasBefore ? $this->extract_shortcode('before', $content) : '';
+			$shortcodeContent = $hasBefore ? $this->extract_shortcode('before', $content) : 'x';
+			$this->nextGoalName = $goalName;			
 			return do_shortcode($shortcodeContent);
 		}
 	}
@@ -88,7 +93,7 @@ class BeforeAndAfterPlugin
 	function extract_shortcode($shortcode, $content)
 	{
 		// first verify that $shortcode is inside $content, before we start in with the regular expressions to extract it
-		if (!has_shortcode($shortcode, $content)) {
+		if (!has_shortcode($content, $shortcode)) {
 			return '';
 		}
 		// extraction tim!
@@ -141,7 +146,7 @@ class BeforeAndAfterPlugin
 	 */
 	function before_shortcode($atts, $content)
 	{
-		if ( $this->nextGoalNameBefore != '' && $this->wasGoalCompleted($this->nextGoalNameBefore) ){
+		if ( $this->nextGoalName != '' && $this->wasGoalCompleted($this->nextGoalName) ){
 			return '';
 		}
 		else {
@@ -156,7 +161,7 @@ class BeforeAndAfterPlugin
 	 */
 	function after_shortcode($atts, $content)
 	{
-		if ( $this->nextGoalNameBefore != '' && $this->wasGoalCompleted($this->nextGoalNameBefore) ){
+		if ( $this->nextGoalName != '' && $this->wasGoalCompleted($this->nextGoalName) ){
 			$trimmedContent = $this->trim_brs($content);
 			return do_shortcode($trimmedContent);
 		}
