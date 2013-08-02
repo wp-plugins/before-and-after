@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: lead capture, lead capture form, lead capture plugin, protected content, gated content, click wrap, click wrapper, tos wrap, tos wrapper, copyright notice, copyright wrapper
 Requires at least: 3.0.1
 Tested up to: 3.6
-Stable tag: 1.2
+Stable tag: 1.2.1
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -93,6 +93,9 @@ Just change the value in the name attribute of your shortcode to anything you wa
 = How Do I Reset My Form, So That Everyone Has To Complete It Again? =
 
 Just change the name attribute to something else. Perhaps add a "2" at the end. Just make sure you update the [goal] and the [goal_complete] shortcode so they match.
+
+= 1.2.1 =
+* Fixing repo issue w tags
 
 = 1.2 =
 * Supports Wordpress 3.6

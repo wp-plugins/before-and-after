@@ -4,7 +4,7 @@ Plugin Name: Before And After - Lead Capture Plugin for Wordpress
 Plugin URI: http://illuminatikarate.com/before-and-after-plugin/
 Description: Before And After is a lead capture plugin for Wordpress. It allows a webmaster to require visitors to complete a goal, such as filling out a contact form, before viewing the content inside the shortcode. This functionality is also useful when webmaster's want to ensure visitors read a Terms Of Service or Copyright Notice before viewing a given page.
 Author: Illuminati Karate, Inc.
-Version: 1.2
+Version: 1.2.1
 Author URI: http://illuminatikarate.com
 
 This plugin is free software: you can redistribute it and/or modify
