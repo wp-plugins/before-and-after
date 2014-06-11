@@ -1,0 +1,82 @@
+<style>
+#b_a_help {
+	max-width: 750px;
+}
+#b_a_help > div {
+	padding-top: 25px;
+}
+#b_a_help > div > h3 {
+	border-bottom: 1px solid lightgray;
+	max-width: 650px;
+	padding-bottom: 7px;
+}
+#b_a_help p {
+	max-width: 550px;
+}
+#b_a_help li {
+	max-width: 550px;
+}
+</style>
+<div id="b_a_help">
+	<h2>Help &amp; Troubleshooting</h2>
+	<p>This page includes all kinds of helpful tips for getting you up and running.</p>
+	<h3>Contents:</h3>
+	<ol class="quick_nav">
+		<li><a href="#b_a_intro">Introduction</a></li>
+		<li><a href="#setup_a_new_goal">How To Setup New Goals</a></li>
+		<li><a href="#complete_a_goal">How To Complete Goals</a></li>
+		<li><a href="#shortcode_reference">Shortcode Reference</a></li>
+		<li><a href="#cf7_integration">Contact Form 7</a></li>
+		<li><a href="#gforms_integration">Gravity Forms</a></li>
+	</ol>
+	<div id="b_a_intro">
+		<h3>Introduction: How Does This Plugin Work?</h3>
+		<p>Before & After is a lead capture plugin that lets you offer your users something in exchange for their information. It can also be when you need to make sure your users read your Terms of Service, verify their age before entering your website, or otherwise need to see one thing, and then another.</p>
+
+		<p>To achieve this, Before & After uses what we call goals. A goal is simply an action, or a "gate", that your users need to pass before they will be allowed to see your protected content.</p>
+
+		<p>A user completes a Goal by simply encountering the [complete_goal] shortcode. You will have placed it on your Thank You page, on the terms page, or whatever other page you need the user to view to signify that they have completed the goal.</p>
+	</div>
+	<div id="setup_a_new_goal"><h3>How To Setup A New Goal</h3>
+		<p>To create a new Goal, simply follow these steps:</p>
+
+		<ol>
+			<li>Under the Before & After menu, select Goals. This will bring up a page which lists all of your goals.</li>
+			<li>Click the "Add A New Goal" button</li>
+			<li>Give your Goal a title, and then fill out the Before & After sections. When you are done, click the Publish button.</li>
+			<li>Your goal has been created! Copy the [goal] shortcode from the Edit Goal screen you are currently viewing, and go paste it onto the on which page you'd like the goal to appear.</li>
+		</ol>
+	</div>
+	<div id="complete_a_goal">
+		<h3>How To Have A Visitor Complete A Goal</h3>
+		<p>Simply add a shortcode like this to the final step of your goal funnel. For example, you could place it on the "Thank You" page from a contact form.</p>
+
+		&#91;complete_goal id="82"]
+
+		<p><em>(Replace the number 82 with the id of your goal. Tip: you can find the shortcode for each goal on the Goals page.)</em></p>
+	</div>
+	<div id="shortcode_reference">
+		<h3>Shortcode Reference</h3>
+
+			<div>
+				<h4>Goal Shortcode</h4>
+				<p>Add this shortcode to any page or post to display your goal there.</p>
+				<pre>&#91;goal id="82"]</pre>
+			</div>
+			
+			<div>
+				<h4>Complete Goal Shortcode</h4>
+				<p>Add this shortcode to the page which signifies that a visitor has completed the goal. For example, you could put this on a "Thank You For Contacting Us" page.</p>
+				<pre>&#91;complete_goal id="82"]</pre>
+			</div>
+	</div>
+	<div id="cf7_integration"><h3>Integrating with Contact Form 7</h3>
+		<p>If you have the Contact Form 7 plugin installed, you'll be able to select any Contact Form 7 form as the Before option for your Goals. Simply Add a new Goal or edit an existing one, and you'll see your Contact Form 7 forms listed.</p>
+		<p>Important: be sure to redirect your Contact Form 7 form to a thank you page, and to add the complete goal shortcode to the Thank You page. <a href="http://contactform7.com/redirecting-to-another-url-after-submissions/" target="_blank">Refer to these instructions if you are unsure how to do this.</a></p>
+	</div>
+	<div id="gforms_integration">
+		<h3>Integrating with Gravity Forms</h3>
+		<p>If you have the Gravity Forms plugin installed, you'll be able to select any Gravity Form you have created as the Before option for your Goals. Simply Add a new Goal or edit an existing one, and you'll see your Gravity Forms forms listed.</p>
+		<p>Important: be sure to redirect your Gravity Form to a thank you page, and to add the complete goal shortcode to the Thank You page. <a href="http://www.gravityhelp.com/documentation/page/Form_Settings" target="_blank">Refer to these instructions if you are unsure how to do this.</a></p>
+	</div>
+</div>

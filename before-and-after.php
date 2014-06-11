@@ -21,186 +21,148 @@ You should have received a copy of the GNU General Public License
 along with this plugin .  If not, see <http://www.gnu.org/licenses/>.
 */
 	
+include('include/b_a-custom-post-type.php');
 include('include/backfill_functions.php');
+include('include/ba.settings.page.class.php');
+include('include/ba.goal_model.class.php');
+include('include/ba.conversion_model.class.php');
+include('include/ba.notification_model.class.php');
+include('include/ba.menus.class.php');
+include('include/ba.shortcodes.class.php');
+include('include/ba.cf7.plugin.php');
+include('include/ba.gravityforms.plugin.php');
+include('include/ba_kg.php');
 
 
 class BeforeAndAfterPlugin
 {
-
-	var $nextGoalName = false;
-
+	var $plugin_title = 'Before & After';
+	var $proUser = false;
+	
 	/* Plugin init. Registers shortcodes and starts the session if needed */
 	function __construct()
 	{
+		// first, ensure the session has been started so that we'll be able to mark goals as completed
 		if(session_id() == '') {
 			session_start();
 		}
-		$this->registerShortcodes();
+		
+		// check the reg key
+		$this->verify_registration_key();
+
+		// instantiate our subclasses
+		$this->Goal = new BA_Goal_Model( $this );
+		$this->Conversions = new BA_Conversion_Model( $this );
+		$this->Notifications = new BA_Notification_Model ( $this );
+		$this->Menus = new BA_Menus( $this );
+		$this->Shortcodes = new BA_Shortcodes( $this );
+		$this->Settings = new BA_Settings_Page( $this );
+		$this->CF7_Plugin = new BA_CF7_Plugin( $this );
+		$this->GForms_Plugin = new BA_GravityForms_Plugin( $this );
+
+		add_action( 'admin_head', array($this, 'admin_css') );
+		add_action( 'init', array($this, 'catch_download_links') );
+		
 	}
 		
-	/* Creates the [goal], [before], [after], and [complete_goal] shortcodes */
-	function registerShortcodes()
+	function admin_css()
 	{
-		add_shortcode('goal', array($this, 'goal_shortcode'));
-		add_shortcode('before', array($this, 'before_shortcode'));
-		add_shortcode('after', array($this, 'after_shortcode'));
-		add_shortcode('complete_goal', array($this, 'complete_goal_shortcode'));
+		if(is_admin()) {
+			$css_url = plugins_url( 'assets/css/flags.css' , __FILE__ );
+			wp_register_style('before-and-after-flags', $css_url);
+			wp_enqueue_style('before-and-after-flags');
+		}	
 	}
 	
-	/* Renders the [goal] shortcode
-	 *
-	 * First checks if the specified goal has been completed.
-	 * - If it has, the nested [before] shortcode is rendered and returned. 
-	 * - If it has not, the nested [after] shortcode is rendered and returned. 
-	 * 
-	 * If neither a before nor an after shortcode is contained within the [goal] shortcode,
-	 * the shortcode implicitly assumes its contents should be shown *before* the 
-	 * goal is completed, and nothing is shown after
-	 */	
-	function goal_shortcode($atts, $content)
+	function show_completed_goals()
 	{
-		if (isset($atts['name'])) {
-			$goalName = $atts['name'];
-		} else {		
-			return ''; // name is required. return empty string.
-		}
-		$hasBefore = has_shortcode($content, 'before');
-		$hasAfter = has_shortcode($content, 'after');
-				
-		if (!$hasBefore && !$hasAfter)
-		{
-			$content = '[before]' . $content . '[/before]';
-			$hasBefore = true;
-		}
-
-		if ($this->wasGoalCompleted($goalName))
-		{
-			$shortcodeContent = $hasAfter ? $this->extract_shortcode('after', $content) : 'x';
-			$this->nextGoalName = $goalName;
-			return do_shortcode($shortcodeContent);
-		}
-		else
-		{
-			$shortcodeContent = $hasBefore ? $this->extract_shortcode('before', $content) : 'x';
-			$this->nextGoalName = $goalName;			
-			return do_shortcode($shortcodeContent);
-		}
+?>
+		<h1>Hello Then!</h1>
+		<p>Fancy a cup of tea?</p>
+<?php		
 	}
 	
-	/* Finds a the given $shortcode inside $content and return it, along with its contemts.
-	 * Returns an empty string if $shortcode is not found within $content
-	 */
-	function extract_shortcode($shortcode, $content)
+	function catch_download_links()
 	{
-		// first verify that $shortcode is inside $content, before we start in with the regular expressions to extract it
-		if (!has_shortcode($content, $shortcode)) {
-			return '';
-		}
-		// extraction tim!
-		$pattern = get_shortcode_regex(); // this is a wp function, it returns a regex to match all shortcodes which are currently registered
-
-		if (   preg_match_all( '/'. $pattern .'/s', $content, $matches )
-			&& array_key_exists( 2, $matches )
-			&& in_array( $shortcode, $matches[2] ) )
+		if (isset($_GET['file_download']))
 		{
-			// shortcode is being used somewhere in this arrey (but the array could also contain other shortcodes, because of the regex we used). 
-			// so look through the array and find it!
+			$download_key = sanitize_text_field($_GET['file_download']);
+			$file_url = '';
 			
-			// first step is to find the key's index, from $matches[2]
-			$foundIndex = -1;
-			foreach ($matches[2] as $index => $match) {			
-				if ($match == $shortcode) {
-					$foundIndex = $index;
-					break;
+			// find the conversion which matches this key
+			$args = array(	'post_type' => 'b_a_conversion',
+							'posts_per_page' => 1,
+							'meta_key' => '_b_a_download_key', 
+							'meta_value' => $download_key );
+			
+			$conversion_list = get_posts($args);
+			$conversion = count($conversion_list) > 0 ? array_shift($conversion_list) : false;
+			if ($conversion) {
+				// find the matching goal
+				$goal_id = intval(get_post_meta($conversion->ID, 'goal_id', true));
+				$goal = $goal_id > 0 ? get_post($goal_id) : false;
+				if($goal)
+				{
+					$after_action = get_post_meta($goal->ID, '_goal_after_action', true);
+					if ($after_action && $after_action == 'file_url') {
+						$file_url = $this->Goal->get_goal_setting_value($goal->ID, 'after-values', 'file_url', '');
+					}
 				}
 			}
-			
-			// if we found the key's index, look for the corresponding entry in $matches[0]
-			// that will contain the entire shortcode, which is what we want to extract!
-			if ($foundIndex >= 0 && isset($matches[0][$foundIndex])) {
-				return $matches[0][$foundIndex];
-			} else {
-				return '';
+
+			if ($file_url != '') {
+				//die('Real Download URL: ' . $file_url);
+				wp_redirect( $file_url , 301 );
+				exit; 				
 			}
-			
+			else {
+				die('Invalid URL. Please check the link and try again.');
+			}
+		}
+	}
+	
+	// check the reg key, and set $this->isPro to true/false reflecting whether the Pro version has been registered
+	function verify_registration_key()
+	{
+		$options = get_option( 'b_a_options' );	
+		if (isset($options['api_key']) && 
+			isset($options['registration_email']) && 
+			isset($options['registration_url']) ) {
+		
+				// check the key
+				$keychecker = new B_A_KeyChecker();
+				$correct_key = $keychecker->computeKey($options['registration_url'], $options['registration_email']);
+				if (strcmp($options['api_key'], $correct_key) == 0) {
+					$this->proUser = true;
+				} else {
+					$this->proUser = false;
+				}
+		
 		} else {
-			return '';
+			// keys not set, so can't be valid.
+			$this->proUser = false;
+			
 		}
-	
-	}
-	
-	/* Sort of a "mega trim" function that removes <br /> tags from the start and end of a string, along with a normal trim () for whitespace.
-	 * Used to extract nested shortcodes without leaving a bunch of extra whitespace
-	*/
-	function trim_brs($str)
-	{
-		$str = preg_replace('/(<br \/>)+$/', '', $str);
-		$str = preg_replace('/^(<br \/>)*/', '', $str);
-		$str = rtrim(trim($str), '<br />');  	
-		return trim($str);
-	}
-	
-	/* Holds the content which should be shown to a visitor BEFORE they complete a specified goal.
-	 *
-	 * This shortcode expects to be nested inside a [goal] shortcode, and possibly accompanied by an [after] shortcode.
-	 */
-	function before_shortcode($atts, $content)
-	{
-		if ( $this->nextGoalName != '' && $this->wasGoalCompleted($this->nextGoalName) ){
-			return '';
+		
+		// look for the Pro plugin - this is also a way to be validated
+		$plugin = "before-and-after-pro/before-and-after-pro.php";
+		include_once( ABSPATH . 'wp-admin/includes/plugin.php' );			
+		if(is_plugin_active($plugin)){
+			$this->proUser = true;
 		}
-		else {
-			$trimmedContent = $this->trim_brs($content);
-			return do_shortcode($trimmedContent);
-		}		
-	}
-	
-	/* Holds the content which should be shown to a visitor AFTER they complete a specified goal.
-	 *
-	 * This shortcode expects to be nested inside a [goal] shortcode, and possibly accompanied by a [before] shortcode.
-	 */
-	function after_shortcode($atts, $content)
-	{
-		if ( $this->nextGoalName != '' && $this->wasGoalCompleted($this->nextGoalName) ){
-			$trimmedContent = $this->trim_brs($content);
-			return do_shortcode($trimmedContent);
-		}
-		else {
-			return '';
-		}		
+		
 	}
 
-	/* [complete_goal] shortcode
-	 *
-	 * This shortcode should be included on a page, e.e., a Thank You page after a newsletter signup form, 
-	 * and marks the current visitor as having completed the goal (via a $_SESSION variable).
-	 */
-	function complete_goal_shortcode($atts, $content)
+	function is_pro()
 	{
-		if (isset($atts['name'])) {
-			$goalName = $atts['name'];
-			return $this->completeGoal($goalName);
+		if (isset($_GET['fake_pro']) && $_GET['fake_pro'] == '1') {
+			return true;
 		}
-		return '';
+		else {
+			return $this->proUser;
+		}
 	}
-	
-	/* Place a session variable that marks the current visitor as having completed the specified goal */
-	function completeGoal($goalName)
-	{
-		$sessionKey = 'goal_' . md5($goalName);
-		$sessionValue = 'goal_completed_' . md5($goalName);
-		$_SESSION[$sessionKey] = $sessionValue;
-		return '';
-	}
-	
-	/* Returns true/false, indicated whether the specified goal has been completed */
-	function wasGoalCompleted($goalName)
-	{
-		$sessionKey = 'goal_' . md5($goalName);
-		$sessionValue = 'goal_completed_' . md5($goalName);
-		return (isset($_SESSION[$sessionKey]) && $_SESSION[$sessionKey] == $sessionValue);
-	}
-	
+
 }
 
 // Instantiate one copy of the plugin class, to kick things off
