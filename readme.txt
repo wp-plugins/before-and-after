@@ -37,8 +37,6 @@ This section describes how to install the plugin and get it working.
 2. Activate the Before And After Lead Capture Plugin through the 'Plugins' menu in WordPress
 3. Read the Instructions.
 
-== Instructions ==
-
 = Introduction: How Does This Plugin Work? =
 
 Before & After is a lead capture plugin that lets you offer your users something in exchange for their information. It can also be when you need to make sure your users read your Terms of Service, verify their age before entering your website, or otherwise need to see one thing, and then another.
