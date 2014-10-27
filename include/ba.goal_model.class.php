@@ -131,7 +131,7 @@ class BA_Goal_Model
 		global $post;
 		
 		// make sure  that the nonce matches and the user has permission to edit this goal
-		if (!wp_verify_nonce( $_POST[ 'b_a_goal_settings_nonce' ], 'b_a_goal_settings' ) ||
+		if (!isset($_POST[ 'b_a_goal_settings_nonce' ]) || !wp_verify_nonce( $_POST[ 'b_a_goal_settings_nonce' ], 'b_a_goal_settings' ) ||
 			!current_user_can( 'edit_post', $post_id ) || 
 			$post->post_type != self::post_type)
 		{
