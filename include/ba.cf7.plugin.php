@@ -10,9 +10,9 @@ class BA_CF7_Plugin
 	}
 	
 	// Looks for Goals that are hooked to this form. If any are found, marks them as complete
-	function capture_form_submissions (&$WPCF7_ContactForm)
+	function capture_form_submissions ($WPCF7_ContactForm)
 	{
-		$form_id = $WPCF7_ContactForm->id;
+		$form_id = $WPCF7_ContactForm->id();
 		$goal = $this->find_goal_by_form_id($form_id);
 		if ($goal) {
 			$completed = $this->root->Goal->completeGoalById($goal->ID);

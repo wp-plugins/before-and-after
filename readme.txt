@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: lead capture, lead capture form, lead capture plugin, protected content, gated content, click wrap, click wrapper, tos wrap, tos wrapper, copyright notice, copyright wrapper
 Requires at least: 3.0.1
 Tested up to: 4.0
-Stable tag: 2.0.1
+Stable tag: 2.1
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -101,6 +101,9 @@ It is underneath the Before and After menu item, on the backend of WordPress.
 
 == Changelog ==
 
+= 2.1 =
+* Fix: restore compatibility with Contact Form 7
+
 = 2.0.1 =
 * Update: update compatibility to WP 4.0.
 * Fix: address various PHP notices.
@@ -122,4 +125,4 @@ It is underneath the Before and After menu item, on the backend of WordPress.
 
 == Upgrade Notice ==
 
-* 2.0.1: Update Available.
+* 2.1: Restores compatibility with Contact Form 7
