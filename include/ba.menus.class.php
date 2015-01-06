@@ -35,7 +35,7 @@ class BA_Menus
 			// Remove the normal Conversions menu, as we are not using the Pro version
 			remove_submenu_page(
 				'before-and-after-settings',
-				'edit.php?post_type=conversion'	
+				'edit.php?post_type=b_a_conversion'	
 			);
 			// If they are not upgraded to Pro yet, show them a screenshot of the conversions menu
  			add_submenu_page(

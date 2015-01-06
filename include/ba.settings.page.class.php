@@ -65,7 +65,7 @@ class BA_Settings_Page
 				<? else: ?>
 					<div class="register_plugin is_registered">
 						<h3>Before & After Pro Activated</h3>
-						<p><strong>This copy of Before & After Pro is registered to <a href="mailto:<?php echo $this->options['registration_email']; ?>"><?php echo htmlentities($this->options['registration_email']); ?></a> for <a href="//<?php echo $this->options['registration_url']; ?>" target="_blank"><?php echo htmlentities($this->options['registration_url']); ?></a>.</strong></p>
+						<p><strong>This copy of Before & After Pro is registered to <a href="mailto:<?php echo $this->options['registration_email']; ?>"><?php echo htmlentities($this->options['registration_email']); ?></a>.</strong></p>
 						<?php $this->output_hidden_registration_fields(); ?>
 					</div>
 				<?php endif; ?>
@@ -138,13 +138,13 @@ class BA_Settings_Page
             'ba_registration_settings', // Page
             'registration' // Section           
         );      
-        add_settings_field(
+        /*add_settings_field(
             'registration_url', // ID
             'Website URL', // Title 
             array( $this, 'registration_url_callback' ), // Callback
             'ba_registration_settings', // Page
             'registration' // Section           
-        );      
+        );*/      
         add_settings_field(
             'api_key', // ID
             'API Key', // Title 
@@ -307,7 +307,7 @@ class BA_Settings_Page
 			#mc_embed_signup h3 { color: #008000; display:block; font-size:19px; padding-bottom:10px; font-weight:bold; margin: 0 0 10px;}
 			#mc_embed_signup .explain {
 				color: #808080;
-				width: 600px;
+				//width: 600px;
 			}
 			#mc_embed_signup label {
 				color: #000000;
@@ -382,7 +382,35 @@ class BA_Settings_Page
 				font-size: 10px;
 				margin: 0;
 				padding: 2px 0 0 3px;				
-			]
+			}
+			#signup_wrapper {
+				background-color: #ccc;
+				bottom: 0;
+				padding-left: 20px;
+				padding-right: 20px;
+				padding-top: 40px;
+				position: fixed;
+				right: 0;
+				top: 0;
+				width: 400px;
+			}
+
+			#signup_wrapper .customer_testimonial {
+				border-top: 1px solid #ccc;
+				color: gray;
+				font-size: 17px;
+				font-style: italic;
+				padding-top: 20px;	
+			}
+
+			#signup_wrapper .customer_testimonial .author {
+				display: block;
+				font-size: 14px;
+				font-style: normal;
+				margin-right: 18px;
+				margin-top: 13px;
+				text-align: right;
+			}
 		</style>
 		<div id="signup_wrapper">
 			<div id="mc_embed_signup">

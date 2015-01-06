@@ -4,7 +4,7 @@ Plugin Name: Before And After - Lead Capture Plugin for Wordpress
 Plugin URI: http://goldplugins.com/our-plugins/before-and-after/
 Description: Before And After is a lead capture plugin for Wordpress. It allows a webmaster to require visitors to complete a goal, such as filling out a contact form, before viewing the content inside the shortcode. This functionality is also useful when webmaster's want to ensure visitors read a Terms Of Service or Copyright Notice before viewing a given page.
 Author: Gold Plugins
-Version: 2.1
+Version: 2.1.1
 Author URI: http://goldplugins.com
 
 This plugin is free software: you can redistribute it and/or modify
@@ -126,16 +126,22 @@ class BeforeAndAfterPlugin
 	{
 		$options = get_option( 'b_a_options' );	
 		if (isset($options['api_key']) && 
-			isset($options['registration_email']) && 
-			isset($options['registration_url']) ) {
+			isset($options['registration_email']) /* && 
+			isset($options['registration_url']) */ ) {
 		
 				// check the key
 				$keychecker = new B_A_KeyChecker();
-				$correct_key = $keychecker->computeKey($options['registration_url'], $options['registration_email']);
+				$correct_key = $keychecker->computeKeyEJ($options['registration_email']);
 				if (strcmp($options['api_key'], $correct_key) == 0) {
 					$this->proUser = true;
 				} else {
-					$this->proUser = false;
+					//maybe its an old style of key
+					$correct_key = $keychecker->computeKey($options['registration_url'], $options['registration_email']);
+					if (strcmp($options['api_key'], $correct_key) == 0) {
+						$this->proUser = true;
+					} else {
+						$this->proUser = false;
+					}
 				}
 		
 		} else {
