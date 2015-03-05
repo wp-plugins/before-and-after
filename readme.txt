@@ -3,8 +3,8 @@ Contributors: ghuger, richardgabriel
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=V7HR8DP4EJSYN
 Tags: lead capture, lead capture form, lead capture plugin, protected content, gated content, click wrap, click wrapper, tos wrap, tos wrapper, copyright notice, copyright wrapper
 Requires at least: 3.0.1
-Tested up to: 4.1
-Stable tag: 2.1.1
+Tested up to: 4.1.1
+Stable tag: 2.1.2
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -27,7 +27,14 @@ Using this simple plugin, any number of scenarios are possible:
 
 There are many other possibilities. By offering Wordpress webmasters a simple way to gate content we hope to provide a useful tool for many scenarios.
 
-Before & After Pro integrates with Gravity Forms and Contact Form 7!  Read the instructions for more information.
+Before & After Pro integrates directly with Gravity Forms and Contact Form 7!  Check out the instructions for more information.
+
+= Upgrade to Pro for For Advanced Features and Support =
+
+The GoldPlugins team does not provide direct support for the Before & After plugin on the WordPress.org forums. One on one email support is available to people who have purchased Before & After Pro only. Before & After Pro also includes conversion tracking, email notifications, and other advanced features. You should [upgrade today!](http://goldplugins.com/our-plugins/before-and-after/upgrade-to-before-and-after-pro/?utm_source=wp&utm_campaign=desc_upgrade1 "Upgrade to Before & After Pro")
+
+[Upgrade To Before & After Pro](http://goldplugins.com/our-plugins/before-and-after/upgrade-to-before-and-after-pro/?utm_source=wp&utm_campaign=desc_upgrade2)
+
 
 == Installation ==
 
@@ -101,6 +108,9 @@ It is underneath the Before and After menu item, on the backend of WordPress.
 
 == Changelog ==
 
+= 2.1.2 =
+* Updates Compatibility to WP 4.1.1
+
 = 2.1.1 =
 * Fix: address issue with double output of Conversions menu.
 * Update: update registration key method.
@@ -130,4 +140,4 @@ It is underneath the Before and After menu item, on the backend of WordPress.
 
 == Upgrade Notice ==
 
-* 2.1.1: Updates Available
+* 2.1.2: Updates Compatibility to WP 4.1.1
