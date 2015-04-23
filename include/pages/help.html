@@ -28,6 +28,7 @@
 		<li><a href="#shortcode_reference">Shortcode Reference</a></li>
 		<li><a href="#cf7_integration">Contact Form 7</a></li>
 		<li><a href="#gforms_integration">Gravity Forms</a></li>
+		<li><a href="#hubspot">HubSpot</a></li>
 	</ol>
 	<div id="b_a_intro">
 		<h3>Introduction: How Does This Plugin Work?</h3>
@@ -35,7 +36,7 @@
 
 		<p>To achieve this, Before & After uses what we call goals. A goal is simply an action, or a "gate", that your users need to pass before they will be allowed to see your protected content.</p>
 
-		<p>A user completes a Goal by simply encountering the [complete_goal] shortcode. You will have placed it on your Thank You page, on the terms page, or whatever other page you need the user to view to signify that they have completed the goal.</p>
+		<p>A user completes a Goal by simply encountering the &#91;complete_goal&#93; shortcode. You will have placed it on your Thank You page, on the terms page, or whatever other page you need the user to view to signify that they have completed the goal.</p>
 	</div>
 	<div id="setup_a_new_goal"><h3>How To Setup A New Goal</h3>
 		<p>To create a new Goal, simply follow these steps:</p>
@@ -44,14 +45,14 @@
 			<li>Under the Before & After menu, select Goals. This will bring up a page which lists all of your goals.</li>
 			<li>Click the "Add A New Goal" button</li>
 			<li>Give your Goal a title, and then fill out the Before & After sections. When you are done, click the Publish button.</li>
-			<li>Your goal has been created! Copy the [goal] shortcode from the Edit Goal screen you are currently viewing, and go paste it onto the on which page you'd like the goal to appear.</li>
+			<li>Your goal has been created! Copy the &#91;goal&#93; shortcode from the Edit Goal screen you are currently viewing, and go paste it onto the on which page you'd like the goal to appear.</li>
 		</ol>
 	</div>
 	<div id="complete_a_goal">
 		<h3>How To Have A Visitor Complete A Goal</h3>
 		<p>Simply add a shortcode like this to the final step of your goal funnel. For example, you could place it on the "Thank You" page from a contact form.</p>
 
-		&#91;complete_goal id="82"]
+		<pre>&#91;complete_goal id="82"&#93;</pre>
 
 		<p><em>(Replace the number 82 with the id of your goal. Tip: you can find the shortcode for each goal on the Goals page.)</em></p>
 	</div>
@@ -61,13 +62,13 @@
 			<div>
 				<h4>Goal Shortcode</h4>
 				<p>Add this shortcode to any page or post to display your goal there.</p>
-				<pre>&#91;goal id="82"]</pre>
+				<pre>&#91;goal id="82"&#93;</pre>
 			</div>
 			
 			<div>
 				<h4>Complete Goal Shortcode</h4>
 				<p>Add this shortcode to the page which signifies that a visitor has completed the goal. For example, you could put this on a "Thank You For Contacting Us" page.</p>
-				<pre>&#91;complete_goal id="82"]</pre>
+				<pre>&#91;complete_goal id="82"&#93;</pre>
 			</div>
 	</div>
 	<div id="cf7_integration"><h3>Integrating with Contact Form 7</h3>
@@ -78,5 +79,11 @@
 		<h3>Integrating with Gravity Forms</h3>
 		<p>If you have the Gravity Forms plugin installed, you'll be able to select any Gravity Form you have created as the Before option for your Goals. Simply Add a new Goal or edit an existing one, and you'll see your Gravity Forms forms listed.</p>
 		<p>Important: be sure to redirect your Gravity Form to a thank you page, and to add the complete goal shortcode to the Thank You page. <a href="http://www.gravityhelp.com/documentation/page/Form_Settings" target="_blank">Refer to these instructions if you are unsure how to do this.</a></p>
+	</div>
+	<div id="hubspot">
+		<h3>How to Submit My Data to HubSpot</h3>
+		<p>If you have Before & After Pro installed, and you have an active HubSpot account, you can have submission data from your Goals submitted through to HubSpot.  To do so, first login to your HubSpot account and create a new Form to receive our submissions.  Next, simply visit our Settings page and look for HubSpot settings.  Once here, you'll want to add your HUB ID, the GUID of the Form (on HubSpot) that you want to send data to, and (optionally) input the Titles of any forms that you don't want to send to HubSpot.  This feature will only work on Contact Form 7 or Gravity Forms that are associated with a Goal.</p>
+		<p>Before &amp; After will attempt to map your fields to HubSpot -- to adjust the field mapping array use the <code>ba_hubspot_field_mappings filter</code>.</p>
+		<p>Before &amp; After will block some default Gravity Forms fields from being sent to HubSpot -- to adjust the field mapping array used for blocking, use the <code>ba_gform_default_fields</code> filter.</p>
 	</div>
 </div>

@@ -4,7 +4,7 @@ Plugin Name: Before And After - Lead Capture Plugin for Wordpress
 Plugin URI: http://goldplugins.com/our-plugins/before-and-after/
 Description: Before And After is a lead capture plugin for Wordpress. It allows a webmaster to require visitors to complete a goal, such as filling out a contact form, before viewing the content inside the shortcode. This functionality is also useful when webmaster's want to ensure visitors read a Terms Of Service or Copyright Notice before viewing a given page.
 Author: Gold Plugins
-Version: 2.1.3
+Version: 2.2
 Author URI: http://goldplugins.com
 
 This plugin is free software: you can redistribute it and/or modify
@@ -32,6 +32,7 @@ include('include/ba.shortcodes.class.php');
 include('include/ba.cf7.plugin.php');
 include('include/ba.gravityforms.plugin.php');
 include('include/ba_kg.php');
+include('include/ba.hubspot.php');
 
 
 class BeforeAndAfterPlugin
@@ -59,10 +60,15 @@ class BeforeAndAfterPlugin
 		$this->Settings = new BA_Settings_Page( $this );
 		$this->CF7_Plugin = new BA_CF7_Plugin( $this );
 		$this->GForms_Plugin = new BA_GravityForms_Plugin( $this );
+		$this->HubSpot = new BA_HubSpot( $this );
 
 		add_action( 'admin_head', array($this, 'admin_css') );
 		add_action( 'init', array($this, 'catch_download_links') );
-		
+
+		//add our custom links for Settings and Support to various places on the Plugins page
+		$plugin = plugin_basename(__FILE__);
+		add_filter( "plugin_action_links_{$plugin}", array($this, 'add_settings_link_to_plugin_action_links') );
+		add_filter( 'plugin_row_meta', array($this, 'add_custom_links_to_plugin_description'), 10, 2 );	
 	}
 		
 	function admin_css()
@@ -138,7 +144,7 @@ class BeforeAndAfterPlugin
 				$correct_key = $keychecker->computeKeyEJ($options['registration_email']);
 				if (strcmp($options['api_key'], $correct_key) == 0) {
 					$this->proUser = true;
-				} else {
+				} else if(isset($options['registration_url']) && isset($options['registration_email'])) {//only check if its an old key if the relevant fields are set
 					//maybe its an old style of key
 					$correct_key = $keychecker->computeKey($options['registration_url'], $options['registration_email']);
 					if (strcmp($options['api_key'], $correct_key) == 0) {
@@ -166,6 +172,34 @@ class BeforeAndAfterPlugin
 	function is_pro()
 	{
 		return $this->proUser;
+	}
+
+	//add an inline link to the settings page, before the "deactivate" link
+	function add_settings_link_to_plugin_action_links($links) { 
+	  $settings_link = '<a href="admin.php?page=before-and-after-settings">Settings</a>';
+	  array_unshift($links, $settings_link); 
+	  return $links; 
+	}
+
+	// add inline links to our plugin's description area on the Plugins page
+	function add_custom_links_to_plugin_description($links, $file) { 
+
+		/** Get the plugin file name for reference */
+		$plugin_file = plugin_basename( __FILE__ );
+	 
+		/** Check if $plugin_file matches the passed $file name */
+		if ( $file == $plugin_file )
+		{		
+			$new_links['settings_link'] = '<a href="admin.php?page=before-and-after-settings">Settings</a>';
+			$new_links['support_link'] = '<a href="http://goldplugins.com/contact/?utm-source=plugin_menu&utm_campaign=support&utm_banner=before-and-after" target="_blank">Get Support</a>';
+				
+			if(!isValidKey()){
+				$new_links['upgrade_to_pro'] = '<a href="http://goldplugins.com/our-plugins/before-and-after/upgrade-to-before-and-after-pro/?utm_source=plugin_menu&utm_campaign=upgrade" target="_blank">Upgrade to Pro</a>';
+			}
+			
+			$links = array_merge( $links, $new_links);
+		}
+		return $links; 
 	}
 
 }

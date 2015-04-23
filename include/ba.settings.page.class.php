@@ -100,6 +100,11 @@ class BA_Settings_Page
 					do_settings_sections( 'ba_notifications_settings' );
 					submit_button();
 				?>
+				<?php
+					// Output HubSpot settings
+					do_settings_sections( 'ba_hubspot_settings' );
+					submit_button();
+				?>
 				
             </form>
 			<?php $this->output_clear_cookies_button(); ?>
@@ -148,8 +153,7 @@ class BA_Settings_Page
             array( $this, 'email_body_callback' ), 
             'ba_notifications_settings', 
             'notifications'
-        );
-		
+        );		
         add_settings_section(
             'registration', // ID
             'Pro Registration', // Title
@@ -177,7 +181,43 @@ class BA_Settings_Page
             array( $this, 'api_key_callback' ), // Callback
             'ba_registration_settings', // Page
             'registration' // Section           
+        );  
+
+        add_settings_section(
+            'hubspot', // ID
+            'HubSpot Settings', // Title
+            array( $this, 'print_hubspot_section_info' ), // Callback
+            'ba_hubspot_settings' // Page
+        );  
+        add_settings_field(
+            'send_to_hubspot', 
+            'Post Submissions to HubSpot', 
+            array( $this, 'send_to_hubspot_callback' ), 
+            'ba_hubspot_settings', 
+            'hubspot'
+        );    
+        add_settings_field(
+            'portal_id', // ID
+            'HUB ID', // Title 
+            array( $this, 'portal_id_callback' ), // Callback
+            'ba_hubspot_settings', // Page
+            'hubspot' // Section           
         );      
+
+        add_settings_field(
+            'form_guid', 
+            'Form GUID', 
+            array( $this, 'form_guid_callback' ), 
+            'ba_hubspot_settings', 
+            'hubspot'
+        ); 
+        add_settings_field(
+            'hubspot_blacklist', 
+            'HubSpot Blacklist', 
+            array( $this, 'hubspot_blacklist_callback' ), 
+            'ba_hubspot_settings', 
+            'hubspot'
+        );    
 
     }
 
@@ -203,6 +243,10 @@ class BA_Settings_Page
 				case 'api_key':
 				case 'registration_url':
 				case 'registration_email':
+				case 'portal_id':
+				case 'form_guid':
+				case 'hubspot_blacklist':
+				case 'send_to_hubspot':
 					$new_input[$key] = sanitize_text_field( $input[$key] );
 				break;			
 
@@ -221,10 +265,21 @@ class BA_Settings_Page
     public function print_section_info()
     {
 		if (!$this->root->is_pro()) {
-			echo '<p class="gold_plugin_not_registered">This feature requires Before &amp; After Pro. <a target="_blank" href="http://goldplugins.com/our-plugins/before-and-after/upgrade-to-before-and-after-pro/?utm_source=plugin&utm_campaign=registration_fields">Click here</a> to upgrade now!</p>';
+			echo '<p class="gold_plugin_not_registered">This feature requires Before &amp; After Pro. <a target="_blank" href="http://goldplugins.com/our-plugins/before-and-after/upgrade-to-before-and-after-pro/?utm_source=plugin&utm_campaign=notification_fields">Click here</a> to upgrade now!</p>';
 		}
         echo '<p>Each time a goal is completed, we\'ll send a notification email.</p>';
 		echo '<p><em>Tip: if you don\'t want notifications, just leave the Email field empty.</em></p>';
+    }
+
+    /** 
+     * Print the HubSpot Section text
+     */
+    public function print_hubspot_section_info()
+    {
+		if (!$this->root->is_pro()) {
+			echo '<p class="gold_plugin_not_registered">This feature requires Before &amp; After Pro. <a target="_blank" href="http://goldplugins.com/our-plugins/before-and-after/upgrade-to-before-and-after-pro/?utm_source=plugin&utm_campaign=hubspot_fields">Click here</a> to upgrade now!</p>';
+		}
+        echo '<p>Each time a goal is completed, we can send the data to your HubSpot account.</p>';
     }
 	
     /** 
@@ -318,6 +373,48 @@ class BA_Settings_Page
 		
 	}
 	
+	/* HubSpot Settings Field Callbacks */
+	
+    public function portal_id_callback()
+    {
+        printf(
+            '<input type="text" id="portal_id" name="b_a_options[portal_id]" value="%s" style="width:450px" %s />',
+            isset( $this->options['portal_id'] ) ? esc_attr( $this->options['portal_id']) : '',
+			$this->root->is_pro() ? '' : 'disabled="true"'
+        );
+		echo '<p class="description">This is the Hub ID (previously called Portal ID) of the HubSpot account you will send submissions to.  Read More information on where to find your HUB ID <a href="http://help.hubspot.com/articles/KCS_Article/Account/Where-can-I-find-my-HUB-ID">here</a>.</p>';
+    }
+	
+    public function form_guid_callback()
+    {
+        printf(
+            '<input type="text" id="form_guid" name="b_a_options[form_guid]" value="%s" style="width:450px" %s />',
+            isset( $this->options['form_guid'] ) ? esc_attr( $this->options['form_guid']) : '',
+			$this->root->is_pro() ? '' : 'disabled="true"'
+        );
+		echo '<p class="description">This is the Form GUID of the HubSpot form you will send submissions to.  Read More information on where to find your Form GUID <a href="http://help.hubspot.com/articles/KCS_Article/Forms/How-do-I-find-the-form-GUID">here</a>.</p>';
+    }
+	
+    public function send_to_hubspot_callback()
+    {
+        printf(
+			'<input type="checkbox" name="b_a_options[send_to_hubspot]" id="send_to_hubspot" value="1" %s %s/>',
+            isset( $this->options['send_to_hubspot'] ) ? 'checked="CHECKED"' : '',
+			$this->root->is_pro() ? '' : 'disabled="true"'
+        );
+		echo '<p class="description">If checked, Form Submissions using Before &amp; After Pro will be sent to the configured HubSpot account.</p>';
+    }
+	
+    public function hubspot_blacklist_callback()
+    {
+        printf(
+			'<textarea name="b_a_options[hubspot_blacklist]" id="hubspot_blacklist" style="width:450px;height:200px;" %s>%s</textarea>',
+            $this->root->is_pro() ? '' : 'disabled="true"',
+			isset( $this->options['hubspot_blacklist'] ) ? $this->options['hubspot_blacklist'] : ''
+        );
+		echo '<p class="description">List of Form Titles to prevent sending to HubSpot.  If you have Form that you want to block from sending to HubSpot, but it is associated with a Goal, add the Title of the Form to this box.  Separate multiple titles with a comma.</p>';
+    }	
+	
 	function output_mailing_list_form()
 	{
 		global $current_user;
@@ -349,6 +446,7 @@ class BA_Settings_Page
 					<ul>
 						<li>Conversion Tracking</li>
 						<li>Notification Emails</li>
+						<li>HubSpot Integration</li>
 						<li>Outstanding support</li>
 						<li>Remove all banners from the admin area</li>
 						<li>And more!</li>

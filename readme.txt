@@ -3,8 +3,8 @@ Contributors: ghuger, richardgabriel
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=V7HR8DP4EJSYN
 Tags: lead capture, lead capture form, lead capture plugin, protected content, gated content, click wrap, click wrapper, tos wrap, tos wrapper, copyright notice, copyright wrapper
 Requires at least: 3.0.1
-Tested up to: 4.1.1
-Stable tag: 2.1.3
+Tested up to: 4.1.2
+Stable tag: 2.2
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -23,7 +23,8 @@ Using this simple plugin, any number of scenarios are possible:
  - Age Gate - Make the visitor confirm their age before browsing a given page. 
  - Copyright Notice: Inform visitors of the copyright of a particular piece of content before allowing them to view it.
  - Instructions In Series: Make sure that a visitor reads a series of instructions in sequence. If they land on a later page, ask them to start over.
- - Guided Product Tours: Show your users the screens of your product in a sequenced progression
+ - Guided Product Tours: Show your users the screens of your product in a sequenced progression.
+ - Capture Lead Data and Submit To HubSpot.
 
 There are many other possibilities. By offering Wordpress webmasters a simple way to gate content we hope to provide a useful tool for many scenarios.
 
@@ -31,7 +32,7 @@ Before & After Pro integrates directly with Gravity Forms and Contact Form 7!  C
 
 = Upgrade to Pro for For Advanced Features and Support =
 
-The GoldPlugins team does not provide direct support for the Before & After plugin on the WordPress.org forums. One on one email support is available to people who have purchased Before & After Pro only. Before & After Pro also includes conversion tracking, email notifications, and other advanced features. You should [upgrade today!](http://goldplugins.com/our-plugins/before-and-after/upgrade-to-before-and-after-pro/?utm_source=wp&utm_campaign=desc_upgrade1 "Upgrade to Before & After Pro")
+The GoldPlugins team does not provide direct support for the Before & After plugin on the WordPress.org forums. One on one email support is available to people who have purchased Before & After Pro only. Before & After Pro also includes conversion tracking, email notifications, submitting data to HubSpot, and other advanced features. You should [upgrade today!](http://goldplugins.com/our-plugins/before-and-after/upgrade-to-before-and-after-pro/?utm_source=wp&utm_campaign=desc_upgrade1 "Upgrade to Before & After Pro")
 
 [Upgrade To Before & After Pro](http://goldplugins.com/our-plugins/before-and-after/upgrade-to-before-and-after-pro/?utm_source=wp&utm_campaign=desc_upgrade2)
 
@@ -92,6 +93,14 @@ Important: be sure to redirect your Contact Form 7 form to a thank you page, and
 If you have the Gravity Forms plugin installed, you'll be able to select any Gravity Form you have created as the Before option for your Goals. Simply Add a new Goal or edit an existing one, and you'll see your Gravity Forms forms listed.
 Important: be sure to redirect your Gravity Form to a thank you page, and to add the complete goal shortcode to the Thank You page. <a href="http://www.gravityhelp.com/documentation/page/Form_Settings" target="_blank">Refer to these instructions if you are unsure how to do this.</a>
 
+= How to Submit My Data to HubSpot =
+
+If you have Before & After Pro installed, and you have an active HubSpot account, you can have submission data from your Goals submitted through to HubSpot.  To do so, first login to your HubSpot account and create a new Form to receive our submissions.  Next, simply visit our Settings page and look for HubSpot settings.  Once here, you'll want to add your HUB ID, the GUID of the Form (on HubSpot) that you want to send data to, and (optionally) input the Titles of any forms that you don't want to send to HubSpot.  This feature will only work on Contact Form 7 or Gravity Forms that are associated with a Goal.
+
+Before &amp; After will attempt to map your fields to HubSpot -- to adjust the field mapping array use the ```ba_hubspot_field_mappings``` filter.
+
+Before &amp; After will block some default Gravity Forms fields from being sent to HubSpot -- to adjust the field mapping array used for blocking, use the ```ba_gform_default_fields``` filter.
+
 == Screenshots ==
 
 1. This is the list of Goals.
@@ -107,6 +116,11 @@ Important: be sure to redirect your Gravity Form to a thank you page, and to add
 It is underneath the Before and After menu item, on the backend of WordPress.
 
 == Changelog ==
+
+= 2.2 =
+* Pro Feature: Options to Submit Data to HubSpot.
+* Minor bug fixes.
+* Tested up to 4.1.2
 
 = 2.1.3 =
 * Admin interface updates
@@ -143,4 +157,4 @@ It is underneath the Before and After menu item, on the backend of WordPress.
 
 == Upgrade Notice ==
 
-* 2.1.2: Admin interface updates
+* 2.2: Pro Feature: Option to Submit Data to HubSpot; minor bug fixes

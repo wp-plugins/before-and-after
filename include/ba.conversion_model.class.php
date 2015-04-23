@@ -46,6 +46,7 @@ class BA_Conversion_Model
 	public function logConversion($goalId)
 	{
 		global $post;
+		
 		// 1: create an array of the visitors details, such as:
 		//   - time and date
 		//   - IP
@@ -77,7 +78,7 @@ class BA_Conversion_Model
 								'country_code'  => ( $geolocation !== false ? $geolocation['country_code'] : '' ),
 								'geolocation'  => ( $geolocation !== false ? $geolocation : '' ),
 								'goal_start_url'  => ( isset($_SESSION['goal_'.$goalId.'_encounter_url']) ? $_SESSION['goal_'.$goalId.'_encounter_url']  : '' ),
-								'goal_complete_url'  => $post->guid,
+								'goal_complete_url'  => isset($post->guid) ? $post->guid : '',
 								'goal_start_time'  => $start_time,
 								'goal_complete_time'  => $completion_time,
 								'goal_time_to_complete'  => $time_to_complete,
@@ -138,7 +139,7 @@ class BA_Conversion_Model
 						 'region_name' => $geo_json->region_name,
 						 'state' => $geo_json->region_name,
 						 'city' => $geo_json->city,
-						 'zipcode' => $geo_json->zipcode,
+						 'zipcode' => isset($geo_json->zipcode) ? $geo_json->zipcode : '',
 						 'latitude' => $geo_json->latitude,
 						 'longitude' => $geo_json->longitude,
 						 'friendly_location' => $geo_json->country_name,
