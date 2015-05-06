@@ -502,6 +502,16 @@
     text-decoration: none;
 }
 
+#mc-show-coupon-codes.modern {
+    padding: 20px 10px 10px;
+}
+#mc-show-coupon-codes.modern h3 {
+    border-bottom: 0 none;
+}
+#mc-show-coupon-codes.modern .thx {
+    color: gray;
+}
+
 .gold_plugins_settings #mc_embed_signup .features {
 	background-color: lightyellow;
     margin-top: 30px;
