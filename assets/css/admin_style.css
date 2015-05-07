@@ -537,3 +537,11 @@
 	margin-left: 15px;
 	max-width: 85%;
 }
+
+/* Goal shortcodes metabox on Add/Edit goal page */
+#b_a_help .gp_code_example,
+#goal_shortcodes .gp_code_example {
+	height: 28px;
+	max-width: 550px;
+	width: 100%;
+}

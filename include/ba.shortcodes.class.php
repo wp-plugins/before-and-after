@@ -33,7 +33,7 @@ class BA_Shortcodes
 	 */
 	function before_shortcode($atts, $content)
 	{
-		return $content;
+		return do_shortcode($content);
 	}
 	
 	/* Holds the content which should be shown to a visitor AFTER they complete a specified goal.
@@ -42,7 +42,7 @@ class BA_Shortcodes
 	 */
 	function after_shortcode($atts, $content)
 	{
-		return $content;
+		return do_shortcode($content);
 	}
 
 	/* [complete_goal] shortcode
@@ -210,12 +210,22 @@ class BA_Shortcodes
 			case 'redirect_page':
 				$value = $this->get_goal_setting_value($goalId, $context, $action);
 				$targetPageId = intval($value);
-				$targetPageURL = get_permalink($targetPageId);
-				return $this->get_redirect_javascript($targetPageURL);
+				$targetURL = get_permalink($targetPageId);				
+				//todo: make sure we're not already on this page, to prevent a loop
+				if (!$this->is_current_url($targetURL)) {
+					return $this->get_redirect_javascript($targetURL);
+				} else {
+					return '';
+				}
 			break;
 			case 'redirect_url':
 				$targetURL = $this->get_goal_setting_value($goalId, $context, $action);
-				return $this->get_redirect_javascript($targetURL);
+				//todo: make sure we're not already on this page, to prevent a loop
+				if (!$this->is_current_url($targetURL)) {
+					return $this->get_redirect_javascript($targetURL);
+				} else {
+					return '';
+				}
 			break;
 			case 'contact_form_7':
 				$value = $this->get_goal_setting_value($goalId, 'before-values', $action);
@@ -246,6 +256,18 @@ class BA_Shortcodes
 				return $rendered;
 			break;
 		}	
+	}
+	
+	/* Checks whether the provided URL matches the current page's URL. Case-insensitive.
+	 *
+	 * @returns		bool	True if $targetURL matches the current page's URL, false if not
+	 */
+	function is_current_url($targetURL)
+	{
+		$currentURL = $_SERVER["REQUEST_URI"];
+		$parts_target = parse_url($targetURL);
+		$parts_current = parse_url($currentURL);
+		return (strcasecmp($parts_target['path'], $parts_current['path']) === 0);
 	}
 	
 	// returns the HTML/Javascript code needed to perform an immediate redirect to the specified URL

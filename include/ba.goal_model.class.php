@@ -308,10 +308,14 @@ class BA_Goal_Model
 	function display_shortcodes_meta_box()
 	{
 		global $post;
-		echo "Add this shortcode to any page where you'd like to <strong>display</strong> this goal:<br />";
-		echo '<pre>[goal id="' . $post->ID . '"]</pre>';
-		echo "Add this shortcode to the page which should <strong>complete</strong> this goal:<br />";
-		echo '<pre>[complete_goal id="' . $post->ID . '"]</pre>';
+		$goal_code = sprintf('[goal id="%d"]', $post->ID);
+		$complete_goal_code = sprintf('[complete_goal id="%d"]', $post->ID);
+		$textarea_tmpl = '<div class="gp_code_example_wrapper"><textarea rows="1" class="gp_code_example">%s</textarea></div>';
+		echo "<p>Add this shortcode to the page where you would like to <strong>display</strong> this goal:</p>";
+		printf($textarea_tmpl, $goal_code);
+		echo "<p>If you're using Contact Form 7 or Gravity Form, the goal will be automatically completed when the form is submitted.</p>";
+		echo "<p>Otherwise, you can add this shortcode to any page (e.g., your Thank You page) to <strong>manually mark the goal as complete</strong>:</p>";
+		printf($textarea_tmpl, $complete_goal_code);
 	}
 	
 	

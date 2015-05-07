@@ -24,12 +24,19 @@ class BA_Settings_Page
 	function admin_scripts()
 	{
 		wp_enqueue_script(
-			'gp-admin',
-			plugins_url('../assets/js/gp-admin.js', __FILE__),
+			'gp-admin_v2',
+			plugins_url('../assets/js/gp-admin_v2.js', __FILE__),
 			array( 'jquery' ),
 			false,
 			true
-		);	
+		);
+		wp_enqueue_script(
+			'ba-admin_v1',
+			plugins_url('../assets/js/ba-admin_v1.js', __FILE__),
+			array( 'jquery' ),
+			false,
+			true
+		);
 	}
 	
 	function check_for_clear_cookies()
@@ -66,8 +73,8 @@ class BA_Settings_Page
 		<?php if ( !$this->root->is_pro() ):?>
 <script type="text/javascript">
 	jQuery(function () {
-		if (typeof(gold_plugins_init_mailchimp_form) == 'function') {
-		gold_plugins_init_mailchimp_form();
+		if (typeof(gold_plugins_init_coupon_box) == 'function') {
+			gold_plugins_init_coupon_box();
 		}
 	});
 </script>
@@ -426,20 +433,23 @@ class BA_Settings_Page
 				<p class="pitch">Submit your name and email and we’ll send you a coupon for 20% off your upgrade to the Pro version.</p>
 			</div>
 			<div id="mc_embed_signup">
-				<form action="http://illuminatikarate.us2.list-manage2.com/subscribe/post?u=403e206455845b3b4bd0c08dc&amp;id=934e059cff" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
-					<label for="mce-NAME">Your Name:</label>
-					<input type="text" value="<?php echo (!empty($current_user->display_name) ? $current_user->display_name : ''); ?>" name="NAME" class="name" id="mce-NAME" placeholder="Your Name">
-					<label for="mce-EMAIL">Your Email:</label>
-					<input type="email" value="<?php echo (!empty($current_user->user_email) ? $current_user->user_email : ''); ?>" name="EMAIL" class="email" id="mce-EMAIL" placeholder="email address" required>
-					<!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
-					<div style="position: absolute; left: -5000px;"><input type="text" name="b_403e206455845b3b4bd0c08dc_6ad78db648" tabindex="-1" value=""></div>
+				<form action="" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+					<div class="fields_wrapper">
+						<label for="mce-NAME">Your Name:</label>
+						<input type="text" value="<?php echo (!empty($current_user->display_name) ? $current_user->display_name : ''); ?>" name="NAME" class="name" id="mce-NAME" placeholder="Your Name">
+						<label for="mce-EMAIL">Your Email:</label>
+						<input type="email" value="<?php echo (!empty($current_user->user_email) ? $current_user->user_email : ''); ?>" name="EMAIL" class="email" id="mce-EMAIL" placeholder="email address" required>
+						<!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+						<div style="position: absolute; left: -5000px;"><input type="text" name="b_403e206455845b3b4bd0c08dc_6ad78db648" tabindex="-1" value=""></div>
+					</div>
 					<div class="clear"><input type="submit" value="Send Me The Coupon Now" name="subscribe" id="mc-embedded-subscribe" class="smallBlueButton"></div>
-						<p class="secure"><img src="<?php echo plugins_url( '../assets/img/lock.png', __FILE__ ); ?>" alt="Lock" width="16px" height="16px" />We respect your privacy.</p>
-						<input type="hidden" id="mc-upgrade-plugin-name" value="Before &amp; After Pro" />
-						<input type="hidden" id="mc-upgrade-link-per" value="http://goldplugins.com/purchase/before-after-pro/single?promo=newsub20" />
-						<input type="hidden" id="mc-upgrade-link-biz" value="http://goldplugins.com/purchase/before-after-pro/business?promo=newsub20" />
-						<input type="hidden" id="mc-upgrade-link-dev" value="http://goldplugins.com/purchase/before-after-pro/developer?promo=newsub20" />
-						<input type="hidden" id="gold_plugins_already_subscribed" name="gold_plugins_already_subscribed" value="<?php echo get_user_setting ('_b_a_ml_has_subscribed', '0'); ?>" />
+					<p class="secure"><img src="<?php echo plugins_url( '../assets/img/lock.png', __FILE__ ); ?>" alt="Lock" width="16px" height="16px" />We respect your privacy.</p>
+					<input type="hidden" name="PRODUCT" value="Before and After Pro" />
+					<input type="hidden" id="mc-upgrade-plugin-name" value="Before &amp; After Pro" />
+					<input type="hidden" id="mc-upgrade-link-per" value="http://goldplugins.com/purchase/before-after-pro/single?promo=newsub20" />
+					<input type="hidden" id="mc-upgrade-link-biz" value="http://goldplugins.com/purchase/before-after-pro/business?promo=newsub20" />
+					<input type="hidden" id="mc-upgrade-link-dev" value="http://goldplugins.com/purchase/before-after-pro/developer?promo=newsub20" />
+					<input type="hidden" id="gold_plugins_already_subscribed" name="gold_plugins_already_subscribed" value="<?php echo get_user_setting ('_b_a_ml_has_subscribed', '0'); ?>" />
 				</form>
 				<div class="features">
 					<strong>When you upgrade, you'll instantly gain access to:</strong>
