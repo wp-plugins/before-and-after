@@ -15,7 +15,9 @@ class BA_CF7_Plugin
 		$form_id = $WPCF7_ContactForm->id();
 		$goal = $this->find_goal_by_form_id($form_id);
 		if ($goal) {
-			$completed = $this->root->Goal->completeGoalById($goal->ID);
+			$submission = WPCF7_Submission::get_instance();
+			$goal_complete_url = $submission ? trim( $submission->get_meta('url') ) : '';
+			$completed = $this->root->Goal->completeGoalById($goal->ID, $goal_complete_url);
 		}
 	}
 	

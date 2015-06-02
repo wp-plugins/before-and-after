@@ -43,7 +43,7 @@ class BA_Conversion_Model
 		return $query;
 	}	
 	
-	public function logConversion($goalId)
+	public function logConversion($goalId, $goal_complete_url = '')
 	{
 		global $post;
 		
@@ -69,6 +69,12 @@ class BA_Conversion_Model
 			$time_to_complete = floatval($completion_time) - floatval($start_time);
 		}
 		
+		$goal_start_url = isset($_SESSION['goal_'.$goalId.'_encounter_url']) ? $_SESSION['goal_'.$goalId.'_encounter_url']  : '';
+		
+		if ( empty($goal_complete_url) && isset($post->ID) ) {
+			$goal_complete_url = get_permalink($post->ID);
+		}
+		
 		$visitor_details = array(
 								'goal_id' => $goalId,
 								'timestamp'  => date('U'),
@@ -77,8 +83,8 @@ class BA_Conversion_Model
 								'country_name'  => ( $geolocation !== false ? $geolocation['country_name'] : '' ),
 								'country_code'  => ( $geolocation !== false ? $geolocation['country_code'] : '' ),
 								'geolocation'  => ( $geolocation !== false ? $geolocation : '' ),
-								'goal_start_url'  => ( isset($_SESSION['goal_'.$goalId.'_encounter_url']) ? $_SESSION['goal_'.$goalId.'_encounter_url']  : '' ),
-								'goal_complete_url'  => isset($post->guid) ? $post->guid : '',
+								'goal_start_url'  => $goal_start_url ,
+								'goal_complete_url'  => $goal_complete_url,
 								'goal_start_time'  => $start_time,
 								'goal_complete_time'  => $completion_time,
 								'goal_time_to_complete'  => $time_to_complete,

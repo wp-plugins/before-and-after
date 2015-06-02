@@ -345,14 +345,14 @@ class BA_Goal_Model
 	/* Place a session variable that marks the current visitor as having completed the specified goal 
 	 * Note: Will also log a conversion (Pro only)
 	*/
-	function completeGoalById($goalId)
+	function completeGoalById($goalId, $goal_complete_url = '')
 	{
 		$goalName = 'Goal_ID_' . $goalId;
 		$alreadyCompleted = $this->wasGoalCompleted($goalName);
 		if (!$alreadyCompleted)
 		{
 			if ($this->root->is_pro()) {			
-				$conversionId = $this->root->Conversions->logConversion($goalId);
+				$conversionId = $this->root->Conversions->logConversion($goalId, $goal_complete_url);
 
 				// save the conversion ID (in the session)
 				$sessionKey_cid = 'goal_' . md5($goalName) . '_cid';

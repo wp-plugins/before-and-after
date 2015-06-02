@@ -136,7 +136,7 @@ class BA_Shortcodes
 		//TBD: mark this as an uncompleted coversion until / unless they convert?
 		
 		global $post;
-		$_SESSION['goal_'.$goalId.'_encounter_url'] = $post->guid;
+		$_SESSION['goal_'.$goalId.'_encounter_url'] = isset($post->ID) ? get_permalink($post->ID) : '';
 		if (true || !isset($_SESSION['goal_'.$goalId.'_start_time'])) {
 			$_SESSION['goal_'.$goalId.'_start_time'] = microtime(true);
 		}
