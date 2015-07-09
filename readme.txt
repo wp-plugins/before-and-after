@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: lead capture, lead capture form, lead capture plugin, protected content, gated content, click wrap, click wrapper, tos wrap, tos wrapper, copyright notice, copyright wrapper
 Requires at least: 3.0.1
 Tested up to: 4.2.2
-Stable tag: 2.5
+Stable tag: 2.5.1
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -117,6 +117,9 @@ It is underneath the Before and After menu item, on the backend of WordPress.
 
 == Changelog ==
 
+= 2.5.1 =
+* Fix: Allow redirection to URLs with same path but different query strings
+
 = 2.5 =
 * Fix: employ a more robust method for getting start and complete goal URLs
 
@@ -168,4 +171,4 @@ It is underneath the Before and After menu item, on the backend of WordPress.
 
 == Upgrade Notice ==
 
-* 2.5: Fix, uses a more robust method to get the start_goal and complete_goal URLs
+* 2.5.1: Fix: Allow redirection to URLs with same path but different query strings

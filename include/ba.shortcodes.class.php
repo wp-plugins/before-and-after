@@ -265,9 +265,15 @@ class BA_Shortcodes
 	function is_current_url($targetURL)
 	{
 		$currentURL = $_SERVER["REQUEST_URI"];
+		
+		// reconstruct URLs into only their Path + Query String, to allow for more reliable comparisons
 		$parts_target = parse_url($targetURL);
-		$parts_current = parse_url($currentURL);
-		return (strcasecmp($parts_target['path'], $parts_current['path']) === 0);
+		$parts_current = parse_url($currentURL);		
+		$cmp_target  = ( !empty($parts_target['path']) ? $parts_target['path'] : '' ) . '?' . ( !empty($parts_target['query']) ? $parts_target['query'] : '' );
+		$cmp_current = ( !empty($parts_current['path']) ? $parts_current['path'] : '' ) . '?' . ( !empty($parts_current['query']) ? $parts_current['query'] : '' );
+
+		// compare the reconstructed URLs, and return whether they match
+		return (strcasecmp($cmp_target, $cmp_current) === 0);
 	}
 	
 	// returns the HTML/Javascript code needed to perform an immediate redirect to the specified URL
