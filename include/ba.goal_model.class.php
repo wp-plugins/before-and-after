@@ -248,7 +248,7 @@ class BA_Goal_Model
 					<input type="radio" name="before-action" id="before-text" value="free_text" <?php echo $this->is_radio_checked($post->ID, 'before-action', 'free_text')?> />
 					<label for="before-text">Show the following text:</label>
 					<div class="secondary-option form-field">
-						<textarea name="before-values[free_text]" rows="5"><?php echo $this->get_goal_setting_value($post->ID, 'before-values', 'free_text')?></textarea>
+						<textarea name="before-values[free_text]" rows="5"><?php echo htmlentities( $this->get_goal_setting_value($post->ID, 'before-values', 'free_text') ); ?></textarea>
 					</div>
 				</li>
 			</ul>
@@ -295,7 +295,7 @@ class BA_Goal_Model
 					<input type="radio" name="after-action" id="after-text" value="free_text" <?php echo $this->is_radio_checked($post->ID, 'after-action', 'free_text')?> />
 					<label for="after-text">Show the following text:</label>
 					<div class="secondary-option form-field">
-						<textarea name="after-values[free_text]" rows="5"><?php echo $this->get_goal_setting_value($post->ID, 'after-values', 'free_text')?></textarea>
+						<textarea name="after-values[free_text]" rows="5"><?php echo htmlentities( $this->get_goal_setting_value($post->ID, 'after-values', 'free_text') );?></textarea>
 					</div>
 				</li>
 			</ul>
@@ -366,26 +366,18 @@ class BA_Goal_Model
 
 		}
 		return '';
-	}
-	
+	}	
 	
 	// saves the value of a POST variable to the database
 	private function update_goal_setting_from_post($post_id, $request_key, $meta_key)
 	{
-		if (isset($_POST[$request_key]))
+		if ( !empty($_POST[$request_key]) )
 		{
-			 // sanitize POSTed value before saving it
-			if (is_array($_POST[$request_key])) {
-				$val = array_map('sanitize_text_field', $_POST[$request_key]);
-			} else {
-				$val = sanitize_text_field($_POST[$request_key]);
-			}
-
-			if ($val != '') {
-				return update_post_meta($post_id, $meta_key, $val);
-			}
+			$val = $_POST[$request_key];
+			return update_post_meta($post_id, $meta_key, $val);
+		} else {
+			return false;
 		}
-		return false;
 	}
 
 	// returns the "checked" attribute for a radio button, depending on whether the setting specified matches the test value specified
