@@ -34,7 +34,7 @@ class B_A_CustomPostType
 	var $customPostTypePlural = 'customPosts';
 	var $prefix = '_ikcf_';
 	
-	function setupCustomPostType($postType)
+	function setupCustomPostType($postType, $custom_args = array())
 	{
 		$singular = ucwords($postType['name']);
 		$plural = isset($postType['plural']) ? ucwords($postType['plural']) : $singular . 's';
@@ -69,9 +69,10 @@ class B_A_CustomPostType
 				'rewrite' => array( 'slug' => $postType['slug'], 'with_front' => (strlen($postType['slug'])>0) ? false : true),
 				'capability_type' => 'post',
 				'hierarchical' => true,
-				'show_in_menu' => 'before-and-after-settings',
+				//'show_in_menu' => 'before-and-after-settings',
 				'supports' => array('title','editor','author','thumbnail','excerpt','comments','custom-fields','page-attributes'),
 			); 
+			$args = array_merge($args, $custom_args);
 			$this->customPostTypeArgs = $args;
 	
 			// register hooks
@@ -241,9 +242,9 @@ class B_A_CustomPostType
 		}
 	}
 
-	function __construct($postType, $customFields = false, $removeDefaultCustomFields = false)
+	function __construct($postType, $customFields = false, $removeDefaultCustomFields = false, $custom_args = array())
 	{
-		$this->setupCustomPostType($postType);
+		$this->setupCustomPostType($postType, $custom_args);
 		
 		if ($customFields)
 		{

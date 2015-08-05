@@ -15,9 +15,11 @@ class BA_Conversion_Model
     {
 		$this->root = $root;
 		$this->plugin_title = $root->plugin_title;
-		$this->setup_custom_post_type();
-		add_action( 'admin_init', array( $this, 'admin_init' ) );		
-		add_filter( 'pre_get_posts', array( $this, 'meta_filter_posts' ) );
+		if ($this->root->is_pro()) {
+			$this->setup_custom_post_type();
+			add_action( 'admin_init', array( $this, 'admin_init' ) );		
+			add_filter( 'pre_get_posts', array( $this, 'meta_filter_posts' ) );
+		}
     }
 	
 	public function admin_init()
@@ -46,6 +48,10 @@ class BA_Conversion_Model
 	public function logConversion($goalId, $goal_complete_url = '')
 	{
 		global $post;
+		
+		if ( !$this->root->is_pro() ) {
+			return false;
+		}
 		
 		// 1: create an array of the visitors details, such as:
 		//   - time and date
@@ -168,7 +174,10 @@ class BA_Conversion_Model
 	{
 		// create the Goal custom post type
 		$postType = array('name' => 'Conversion', 'plural' => 'Conversions', 'slug' => 'b_a_conversions');
-		$this->root->custom_post_types[] = new B_A_CustomPostType($postType, array(), false);
+		$custom_args = array(
+			'show_in_menu' => 'edit.php?post_type=b_a_goal'
+		);
+		$this->root->custom_post_types[] = new B_A_CustomPostType($postType, array(), false, $custom_args);
 
 		add_action('init', array($this, 'remove_unneeded_metaboxes')); // remove some default meta boxes
 		

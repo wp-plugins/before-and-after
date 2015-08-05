@@ -424,13 +424,7 @@ class BA_Goal_Model
 		else if ($setting_location == 'after-values') {
 			$vals = get_post_meta($goal_id, '_goal_after_values', true);		
 		}
-/* 		var_dump($goal_id);
-		var_dump($setting_location);
-		var_dump($setting_key);
-		var_dump($default_value);
-		var_dump($vals);
-		die('test');
- */		if($vals && is_array($vals) && isset($vals[$setting_key])) {
+		if($vals && is_array($vals) && isset($vals[$setting_key])) {
 			return $vals[$setting_key];
 		} else {
 			return $default_value;

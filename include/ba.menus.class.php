@@ -30,28 +30,50 @@ class BA_Menus
 	function create_admin_submenus()
 	{
 
- 		if (!$this->root->is_pro())
+ 		if ( $this->root->is_pro() )
 		{
-			// Remove the normal Conversions menu, as we are not using the Pro version
+			// PRO: Add quick links to Goals and Conversions from the B+A settings menu
+			add_submenu_page(
+				'before-and-after-settings',
+				'Goals', 
+				'View Goals',
+				'manage_options', 
+				'edit.php?post_type=b_a_goal'
+			);
+			add_submenu_page(
+				'before-and-after-settings',
+				'Conversions', 
+				'View Conversions',
+				'manage_options', 
+				'edit.php?post_type=b_a_conversion'
+			);
+		}
+		else
+		{
+			// If they are not upgraded to Pro, show them a screenshot of the conversions menu
 			remove_submenu_page(
 				'before-and-after-settings',
 				'edit.php?post_type=b_a_conversion'	
 			);
-			// If they are not upgraded to Pro yet, show them a screenshot of the conversions menu
  			add_submenu_page(
 				'before-and-after-settings',
 				'Conversions', 
 				'Conversions',
 				'manage_options', 
 				'upgrade-to-b_a_pro',
-				array($this->root->Conversions, 'show_upgrade_message')
-				
+				array($this->root->Conversions, 'show_upgrade_message')				
 			);
+ 			add_submenu_page(
+				'edit.php?post_type=b_a_goal',
+				'Conversions', 
+				'Conversions',
+				'manage_options', 
+				'upgrade-to-b_a_pro',
+				array($this->root->Conversions, 'show_upgrade_message')				
+			);			
 		}
 
-		// Because we want the main menu to be called "Before & After", but the first menu to be called "Settings", we'll need to override the title now by creating a duplicate menu with the correct title ("Settings")
-		add_submenu_page('before-and-after-settings', $this->root->plugin_title . ' Settings', 'Settings', 'manage_options', 'before-and-after-settings', array( $this->root->Settings, 'output_settings_page' ) );
-
+		// Add the Help & Troubleshooting menu
 		add_submenu_page(
 			'before-and-after-settings',
 			'Help & Troubleshooting', 
@@ -62,18 +84,11 @@ class BA_Menus
 			
 		);
 		
-		
-		
-		
-		/* 	add_submenu_page(
-			'before-and-after-settings',
-			'Completed Goals', 
-			'Completed Goals',
-			'manage_options', 
-			'before-and-after-completed_goals',
-			array( $this->root, 'show_completed_goals' )
-		);
-		 */
+		// We want the main menu's label to be "Before & After", but the first submenu's label to be "Settings",
+		// so we must override the submenu's label (by default, both would be labeled "Before & After")		
+		// IMPORTANT: this code needs to run *after* the other submenus have already been added, else it won't work
+		global $submenu;
+		$submenu['before-and-after-settings'][0][0] = 'Settings';
 	}
 	function show_upgrade_page()
 	{

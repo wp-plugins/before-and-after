@@ -545,3 +545,53 @@
 	max-width: 550px;
 	width: 100%;
 }
+
+
+/* Widgets */
+
+.widget-content .gp_widget_form_wrapper fieldset.radio_text_input {
+    border: 1px solid lightgray;
+    margin: 10px 3px;
+    padding: 10px;
+}
+.widget-content .gp_widget_form_wrapper fieldset.radio_text_input .bikeshed_radio {
+	margin-top: -15px;
+	padding-left: 2px;
+}
+.widget-content .gp_widget_form_wrapper fieldset.radio_text_input .bikeshed_radio p {
+	margin-top: 0;
+}
+.widget-content .gp_widget_form_wrapper fieldset.radio_text_input .bikeshed_radio .radio_option label {
+	display: inline-block;
+	width: auto;
+}
+.widget-content .gp_widget_form_wrapper fieldset.radio_text_input .bikeshed_radio .radio_option input[type="text"] {
+	display: inline-block;
+    margin: 0 2px 0 4px;
+    position: relative;
+    text-align: right;
+    top: 2px;
+    width: 50px;
+}
+.widget-content .gp_widget_form_wrapper fieldset.radio_text_input .bikeshed_radio .radio_option:last-child::after {
+	content: " px";
+	position: relative;
+	top: 2px;
+}
+
+.gp_widget_form_wrapper select {
+	width: 99%;
+}
+
+.gp_widget_form_wrapper .radio_wrapper.radio_group {
+    margin-bottom: 25px;
+}
+
+.gp_widget_form_wrapper .radio_group .radio_group_label {
+    margin: 0 10px -5px 0;
+    font-weight: normal;
+}
+
+.gp_widget_form_wrapper .radio_group p {
+    padding-left: 6px;
+}

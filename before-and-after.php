@@ -4,7 +4,7 @@ Plugin Name: Before And After - Lead Capture Plugin for Wordpress
 Plugin URI: http://goldplugins.com/our-plugins/before-and-after/
 Description: Before And After is a lead capture plugin for Wordpress. It allows a webmaster to require visitors to complete a goal, such as filling out a contact form, before viewing the content inside the shortcode. This functionality is also useful when webmaster's want to ensure visitors read a Terms Of Service or Copyright Notice before viewing a given page.
 Author: Gold Plugins
-Version: 2.5.2
+Version: 2.5.3
 Author URI: http://goldplugins.com
 
 This plugin is free software: you can redistribute it and/or modify
@@ -33,6 +33,7 @@ include('include/ba.cf7.plugin.php');
 include('include/ba.gravityforms.plugin.php');
 include('include/ba_kg.php');
 include('include/ba.hubspot.php');
+include('include/widgets/ba.goal_widget.class.php');
 
 
 class BeforeAndAfterPlugin
@@ -69,6 +70,10 @@ class BeforeAndAfterPlugin
 		$plugin = plugin_basename(__FILE__);
 		add_filter( "plugin_action_links_{$plugin}", array($this, 'add_settings_link_to_plugin_action_links') );
 		add_filter( 'plugin_row_meta', array($this, 'add_custom_links_to_plugin_description'), 10, 2 );	
+		
+		// register all of our widgets now
+		add_action( 'widgets_init', array($this, 'register_all_widgets') );
+		
 	}
 		
 	function admin_css()
@@ -200,6 +205,11 @@ class BeforeAndAfterPlugin
 			$links = array_merge( $links, $new_links);
 		}
 		return $links; 
+	}
+	
+	function register_all_widgets()
+	{
+		register_widget( 'Before_After_Goal_Widget' );
 	}
 
 }
