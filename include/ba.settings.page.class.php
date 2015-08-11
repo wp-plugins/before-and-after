@@ -449,7 +449,7 @@ class BA_Settings_Page
 					<input type="hidden" id="mc-upgrade-link-per" value="http://goldplugins.com/purchase/before-after-pro/single?promo=newsub20" />
 					<input type="hidden" id="mc-upgrade-link-biz" value="http://goldplugins.com/purchase/before-after-pro/business?promo=newsub20" />
 					<input type="hidden" id="mc-upgrade-link-dev" value="http://goldplugins.com/purchase/before-after-pro/developer?promo=newsub20" />
-					<input type="hidden" id="gold_plugins_already_subscribed" name="gold_plugins_already_subscribed" value="<?php echo get_user_setting ('_b_a_ml_has_subscribed', '0'); ?>" />
+					<input type="hidden" id="gold_plugins_already_subscribed" name="gold_plugins_already_subscribed" value="0" />
 				</form>
 				<div class="features">
 					<strong>When you upgrade, you'll instantly gain access to:</strong>

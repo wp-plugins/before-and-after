@@ -205,6 +205,8 @@ class BA_Shortcodes
 			return ''; // TBD: throw error/exception?
 		}
 		
+		$this->goalId = $goalId;
+
 		switch($action)
 		{
 			case 'redirect_page':
@@ -231,15 +233,21 @@ class BA_Shortcodes
 				$value = $this->get_goal_setting_value($goalId, 'before-values', $action);
 				$contactFormId = intval($value);
 				$form = get_post($contactFormId);
+				add_filter('wpcf7_form_elements', array( $this, "add_ba_goal_id_to_cf7_shortcode") );
 				$shortcode = '[contact-form-7 id="' . $contactFormId . '" title="' . $form->post_title . '"]';
-				return do_shortcode($shortcode);
+				$output = do_shortcode($shortcode);						
+				remove_filter('wpcf7_form_elements', array( $this, "add_ba_goal_id_to_cf7_shortcode") );
+				return $output;
 			break;
 			case 'gravity_form':
 				$value = $this->get_goal_setting_value($goalId, 'before-values', $action);
 				$contactFormId = intval($value);
 				//$form = get_post($contactFormId); // we dont support titles for GForms yet. TBD.
+				add_filter( 'gform_submit_button', array( $this, 'add_ba_goal_id_to_gravity_forms_shortcode' ), 10, 2 );
 				$shortcode = '[gravityform id="' . $contactFormId . '"]';
-				return do_shortcode($shortcode);						
+				$output = do_shortcode($shortcode);						
+				remove_filter( 'gform_submit_button', array( $this, 'add_ba_goal_id_to_gravity_forms_shortcode' ), 10, 2 );
+				return $output;
 			break;
 			case 'file_url':
 				$targetURL = $this->get_goal_setting_value($goalId, $context, $action);
@@ -258,6 +266,21 @@ class BA_Shortcodes
 		}	
 	}
 	
+	function add_ba_goal_id_to_cf7_shortcode($form)
+	{
+		if (!empty($this->goalId)) {
+			$form .= sprintf('<input type="hidden" name="_before_after_goal_id" value="%d" />', $this->goalId);
+		}
+		return $form;
+	}
+	
+	function add_ba_goal_id_to_gravity_forms_shortcode( $button, $form ) {
+		if (!empty($this->goalId)) {
+			$button .= sprintf('<input type="hidden" name="_before_after_goal_id" value="%d" />', $this->goalId);
+		}
+		return $button;
+	}
+
 	/* Checks whether the provided URL matches the current page's URL. Case-insensitive.
 	 *
 	 * @returns		bool	True if $targetURL matches the current page's URL, false if not
