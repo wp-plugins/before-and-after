@@ -210,8 +210,8 @@ class BA_Goal_Model
 				<?php endif; ?>
 				<?php
 					if(defined('WPCF7_VERSION')):
-						$cf7_forms = get_posts(array('post_type' => 'wpcf7_contact_form'));
-						if (is_array($cf7_forms) && count($cf7_forms) > 0): 							
+						$cf7_forms = $this->get_all_cf7_forms();
+						if (is_array($cf7_forms) && count($cf7_forms) > 0):
 				?>
 				<li>
 					<input type="radio" name="before-action" id="before-cf7-form" value="contact_form_7" <?php echo $this->is_radio_checked($post->ID, 'before-action', 'contact_form_7')?> />
@@ -430,8 +430,18 @@ class BA_Goal_Model
 			return $default_value;
 		}		
 	}
-			
 	
-	
+	private function get_all_cf7_forms()
+	{
+		return get_posts(
+			array(
+				'post_type' => 'wpcf7_contact_form',
+				'posts_per_page' => -1,
+				'nopaging' => true,
+				'orderby' => 'title',
+				'order' => 'ASC'				
+			)
+		);		
+	}	
 
 }

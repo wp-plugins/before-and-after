@@ -3,8 +3,8 @@ Contributors: ghuger, richardgabriel
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=V7HR8DP4EJSYN
 Tags: lead capture, lead capture form, lead capture plugin, protected content, gated content, click wrap, click wrapper, tos wrap, tos wrapper, copyright notice, copyright wrapper
 Requires at least: 3.0.1
-Tested up to: 4.2.4
-Stable tag: 2.5.4
+Tested up to: 4.3
+Stable tag: 2.5.6
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -117,6 +117,12 @@ It is underneath the Before and After menu item, on the backend of WordPress.
 
 == Changelog ==
 
+= 2.5.6 =
+* Bugfix: list all CF7 forms in drop down
+
+= 2.5.5 =
+* Update widgets for compatibility with WordPress 4.3
+
 = 2.5.4 =
 * New Feature: Use the same Contact Form 7 or Gravity Form for many Goals, but still let your visitors complete the Goals individually.
 
@@ -180,4 +186,4 @@ It is underneath the Before and After menu item, on the backend of WordPress.
 
 == Upgrade Notice ==
 
-* 2.5.4: New Feature: Use the same Contact Form 7 or Gravity Form for many Goals, but still let your visitors complete the Goals individually.
+* 2.5.6: Bugfix: list all CF7 forms in drop down

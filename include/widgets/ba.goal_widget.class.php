@@ -22,14 +22,18 @@ class Before_After_Goal_Widget extends WP_Widget
 		'title' => '',
 		'goal_id' => '',
 	);
-		
-	function Before_After_Goal_Widget()
-	{
+	
+	function __construct(){
 		$widget_ops = array(
 			'classname' => 'Before_After_Goal_Widget',
 			'description' => 'Displays a Before &amp; After Goal.'
 		);
-		$this->WP_Widget('Before_After_Goal_Widget', 'Before &amp; After: Goal', $widget_ops);
+		parent::__construct('Before_After_Goal_Widget', 'Before &amp; After: Goal', $widget_ops);		
+	}
+		
+	function Before_After_Goal_Widget()
+	{
+		$this->__construct();
 	}
 
 	function form($instance)
